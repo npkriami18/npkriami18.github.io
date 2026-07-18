@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pranay Nannuri — Software Engineer</title>
+<meta name="description" content="Data Engineer at Netradyne building distributed, data-intensive backend systems and agentic AI infrastructure. U.S. patent co-inventor. IIT (BHU) '25.">
+<meta property="og:title" content="Pranay Nannuri — Software Engineer">
+<meta property="og:description" content="Distributed data infrastructure at fleet scale · agentic AI pipelines · U.S. patent co-inventor.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B1220'/%3E%3Cpath d='M6 20 L11 20 L13 12 L16 24 L19 16 L21 20 L26 20' stroke='%23FFB224' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#070D1A;
+  --glass:rgba(15,24,44,.52);
+  --glass-2:rgba(15,24,44,.38);
+  --edge:rgba(157,180,214,.16);
+  --edge-hi:rgba(255,255,255,.10);
+  --line:#22304A;
+  --signal:#FFB224;
+  --signal-soft:rgba(255,178,36,.16);
+  --ice:#9DB4D6;
+  --cyan:#5BD1E7;
+  --white:#EEF3FC;
+  --ok:#3DDC97;
+  --max:1100px;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --disp:'Sora',var(--sans);
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--night);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--signal);color:var(--night)}
+a{color:var(--white);text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+/* ---------- living background : glow + vector field ---------- */
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.b1{width:56vw;height:56vw;background:radial-gradient(circle,rgba(255,178,36,.20),transparent 65%);top:-18vw;left:-14vw;animation:drift1 26s ease-in-out infinite alternate}
+.b2{width:52vw;height:52vw;background:radial-gradient(circle,rgba(91,209,231,.16),transparent 65%);bottom:-20vw;right:-12vw;animation:drift2 32s ease-in-out infinite alternate}
+.b3{width:34vw;height:34vw;background:radial-gradient(circle,rgba(64,98,181,.22),transparent 65%);top:38%;left:44%;animation:drift3 40s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(9vw,7vh) scale(1.12)}}
+@keyframes drift2{to{transform:translate(-8vw,-6vh) scale(1.08)}}
+@keyframes drift3{to{transform:translate(-6vw,8vh)}}
+@media (prefers-reduced-motion: reduce){.blob{animation:none}}
+#field{position:fixed;inset:0;z-index:1;display:block}
+.field-hint{
+  position:fixed;right:22px;bottom:18px;z-index:3;pointer-events:none;
+  font-family:var(--mono);font-size:11px;color:var(--ice);opacity:.75;
+  background:var(--glass-2);border:1px solid var(--edge);border-radius:999px;
+  padding:7px 14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.field-hint b{color:var(--signal);font-weight:500}
+@media(max-width:760px){.field-hint{display:none}}
+
+/* scroll progress */
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--signal),var(--cyan));width:0;z-index:60;box-shadow:0 0 10px rgba(255,178,36,.6)}
+
+/* ---------- glass primitives ---------- */
+.glass{
+  background:var(--glass);
+  border:1px solid var(--edge);
+  border-radius:var(--r);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  box-shadow:0 20px 50px rgba(0,0,0,.35), inset 0 1px 0 var(--edge-hi);
+  position:relative;
+}
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.06),transparent 30%,transparent 70%,rgba(91,209,231,.05));
+}
+
+/* ---------- nav : floating glass pill ---------- */
+nav{position:fixed;top:16px;left:0;right:0;z-index:50;display:flex;justify-content:center;padding:0 16px}
+.pill{
+  display:flex;align-items:center;gap:26px;
+  padding:11px 22px;border-radius:999px;
+  background:rgba(11,18,34,.62);border:1px solid var(--edge);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 12px 34px rgba(0,0,0,.42), inset 0 1px 0 var(--edge-hi);
+}
+.mark{font-family:var(--mono);font-size:13.5px;color:var(--ice)}
+.mark b{color:var(--signal);font-weight:500}
+.pill a.lnk{font-family:var(--mono);font-size:12.5px;color:var(--ice);transition:color .18s}
+.pill a.lnk:hover{color:var(--white)}
+.pill a.res{color:var(--night);background:var(--signal);padding:7px 15px;border-radius:999px;font-family:var(--mono);font-size:12.5px;font-weight:500;transition:filter .18s}
+.pill a.res:hover{filter:brightness(1.1)}
+@media(max-width:720px){.pill a.lnk{display:none}.pill{gap:16px}}
+
+/* ---------- hero ---------- */
+header{padding:170px 0 40px;position:relative;z-index:2}
+.eyebrow{font-family:var(--mono);font-size:13px;color:var(--ice);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--signal)}
+h1{
+  font-family:var(--disp);font-weight:800;
+  font-size:clamp(2.6rem,6.6vw,4.7rem);
+  line-height:1.05;letter-spacing:-.024em;
+  margin:26px 0 24px;max-width:20ch;
+  text-shadow:0 2px 30px rgba(7,13,26,.9);
+}
+h1 .amp{
+  background:linear-gradient(92deg,var(--signal),#FFD27A 55%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lede{color:var(--ice);font-size:clamp(1.02rem,1.7vw,1.18rem);max-width:58ch;text-shadow:0 1px 18px rgba(7,13,26,.9)}
+.lede b{color:var(--white);font-weight:500}
+.cta-row{display:flex;gap:14px;margin:36px 0 0;flex-wrap:wrap}
+.btn{
+  font-family:var(--mono);font-size:14px;padding:13px 22px;border-radius:12px;
+  border:1px solid var(--edge);color:var(--white);
+  background:var(--glass-2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:all .2s;display:inline-flex;gap:8px;align-items:center;
+}
+.btn:hover{border-color:var(--ice);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:var(--night);font-weight:500;box-shadow:0 8px 30px rgba(255,178,36,.35)}
+.btn.primary:hover{filter:brightness(1.08)}
+
+/* telemetry glass strip */
+.trace{margin:70px auto 0;max-width:var(--max);padding:0 28px;position:relative;z-index:2}
+.trace-card{overflow:hidden}
+#tele{display:block;width:100%;height:92px}
+.ticker{border-top:1px solid var(--edge);overflow:hidden;position:relative}
+.tick-track{display:inline-flex;gap:56px;padding:11px 0;white-space:nowrap;font-family:var(--mono);font-size:12.5px;color:var(--ice);animation:tick 30s linear infinite;will-change:transform}
+.tick-track span b{color:var(--signal);font-weight:500}
+.tick-track span i{font-style:normal;color:var(--ok)}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.tick-track{animation:none}}
+
+/* ---------- proof stats ---------- */
+.proof{max-width:var(--max);margin:26px auto 0;padding:0 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative;z-index:2}
+.stat{padding:24px 22px;transition:transform .25s,border-color .25s}
+.stat:hover{transform:translateY(-4px);border-color:rgba(255,178,36,.45)}
+.stat .n{font-family:var(--disp);font-weight:700;font-size:1.8rem;letter-spacing:-.01em}
+.stat .n em{font-style:normal;color:var(--signal)}
+.stat .l{font-family:var(--mono);font-size:11.5px;color:var(--ice);margin-top:7px;letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:860px){.proof{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.proof{grid-template-columns:1fr}}
+
+/* ---------- sections ---------- */
+section{padding:96px 0 0;position:relative;z-index:2}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:1.6rem;letter-spacing:-.01em;text-shadow:0 1px 20px rgba(7,13,26,.9)}
+.sec-head .tag{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.14em;text-transform:uppercase}
+.sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--edge),transparent)}
+
+/* experience */
+.job{display:grid;grid-template-columns:190px 1fr;gap:30px;padding:32px;margin-bottom:18px}
+.job .when{font-family:var(--mono);font-size:13px;color:var(--ice);padding-top:4px}
+.job .when .co{color:var(--white);font-weight:500;display:block;font-size:14px;margin-bottom:6px}
+.job h3{font-family:var(--disp);font-size:1.14rem;font-weight:600;margin-bottom:14px}
+.job ul{list-style:none}
+.job li{padding-left:22px;position:relative;margin-bottom:12px;color:var(--ice)}
+.job li::before{content:"▸";position:absolute;left:0;color:var(--signal);font-size:.85em;top:2px}
+.job li b{color:var(--white);font-weight:500}
+@media(max-width:760px){.job{grid-template-columns:1fr;gap:12px;padding:24px}}
+
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;perspective:1200px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{
+  padding:28px 26px;display:flex;flex-direction:column;gap:12px;
+  transition:border-color .25s, box-shadow .25s;
+  transform-style:preserve-3d;will-change:transform;
+}
+.card:hover{border-color:rgba(255,178,36,.5);box-shadow:0 26px 60px rgba(0,0,0,.5), inset 0 1px 0 var(--edge-hi), 0 0 0 1px rgba(255,178,36,.12)}
+.card .meta{font-family:var(--mono);font-size:11.5px;color:var(--signal);letter-spacing:.1em;text-transform:uppercase}
+.card h3{font-family:var(--disp);font-size:1.14rem;font-weight:600}
+.card p{color:var(--ice);font-size:.95rem;flex:1}
+.card .link{font-family:var(--mono);font-size:13px;display:inline-flex;gap:7px;align-items:center}
+.card .link::after{content:"↗";color:var(--signal);transition:transform .18s}
+.card:hover .link::after{transform:translate(2px,-2px)}
+
+/* patent record */
+.record{padding:32px;margin-bottom:22px;overflow:hidden}
+.record::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--signal),var(--cyan));border-radius:3px}
+.record .rt{font-family:var(--disp);font-weight:600;font-size:1.18rem;margin-bottom:20px;max-width:52ch}
+.rec-grid{display:grid;grid-template-columns:repeat(4,auto);gap:12px 46px;font-family:var(--mono);font-size:13px}
+.rec-grid .f span{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);opacity:.65;margin-bottom:4px}
+.rec-grid .f b{color:var(--white);font-weight:500}
+.rec-grid .f b.pend{color:var(--signal);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+@media (prefers-reduced-motion: reduce){.rec-grid .f b.pend{animation:none}}
+.record .note{margin-top:18px;color:var(--ice);font-size:.94rem;max-width:70ch}
+@media(max-width:760px){.rec-grid{grid-template-columns:1fr 1fr}}
+.honors{display:flex;gap:14px;flex-wrap:wrap}
+.honor{
+  font-family:var(--mono);font-size:13px;color:var(--ice);border-radius:999px;padding:10px 20px;
+  background:var(--glass-2);border:1px solid var(--edge);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.honor b{color:var(--white);font-weight:500}
+
+/* skills */
+.skills-panel{padding:8px 32px}
+.skill-row{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:18px 0;border-top:1px solid var(--edge)}
+.skill-row:first-child{border-top:none}
+.skill-row .k{font-family:var(--mono);font-size:12.5px;color:var(--signal);letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+.skill-row .v{color:var(--ice)}
+.skill-row .v b{color:var(--white);font-weight:500}
+@media(max-width:700px){.skill-row{grid-template-columns:1fr;gap:6px}}
+
+/* footer */
+footer{padding:110px 0 60px;position:relative;z-index:2}
+.foot-card{padding:52px 44px;text-align:left}
+footer .big{font-family:var(--disp);font-weight:700;font-size:clamp(1.6rem,4vw,2.7rem);letter-spacing:-.015em;margin:16px 0 28px}
+footer .big a{border-bottom:2px solid var(--signal);transition:color .18s}
+footer .big a:hover{color:var(--signal)}
+.foot-links{display:flex;gap:26px;flex-wrap:wrap}
+.foot-links a{font-family:var(--mono);font-size:13.5px;color:var(--ice);transition:color .18s}
+.foot-links a:hover{color:var(--signal)}
+.colophon{margin-top:46px;font-family:var(--mono);font-size:12px;color:var(--ice);opacity:.6}
+@media(max-width:600px){.foot-card{padding:36px 26px}}
+
+/* reveal: glass condensing from blur */
+.rev{opacity:0;transform:translateY(18px);filter:blur(10px);transition:opacity .7s ease,transform .7s ease,filter .7s ease}
+.rev.in{opacity:1;transform:none;filter:blur(0)}
+@media (prefers-reduced-motion: reduce){.rev{opacity:1;transform:none;filter:none;transition:none}}
+
+/* ---------- harness layer ---------- */
+#boot{position:fixed;inset:0;z-index:100;background:var(--night);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease}
+#boot.done{opacity:0;pointer-events:none}
+#boot pre{font-family:var(--mono);font-size:13.5px;line-height:2;color:var(--ice);min-width:min(460px,84vw)}
+#boot pre b{color:var(--signal);font-weight:500}
+#boot pre i{font-style:normal;color:var(--ok)}
+.scan{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(157,180,214,.5) 2px 3px)}
+.hud::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    linear-gradient(var(--signal),var(--signal)) top left/14px 2px,
+    linear-gradient(var(--signal),var(--signal)) top left/2px 14px,
+    linear-gradient(var(--signal),var(--signal)) bottom right/14px 2px,
+    linear-gradient(var(--signal),var(--signal)) bottom right/2px 14px;
+  background-repeat:no-repeat;opacity:.55;
+}
+.mod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ice);border:1px solid var(--edge);border-radius:6px;padding:4px 10px;display:inline-flex;align-items:center;gap:8px;background:var(--glass-2)}
+.mod .led{width:6px;height:6px;border-radius:50%;background:var(--signal);box-shadow:0 0 7px var(--signal);animation:pulse 1.6s ease-in-out infinite}
+.mod.ok .led{background:var(--ok);box-shadow:0 0 7px var(--ok);animation:none}
+.mod .st::after{content:"running"}
+.mod.ok .st::after{content:"ok";color:var(--ok)}
+#console{
+  position:fixed;left:18px;bottom:16px;z-index:40;width:330px;max-width:calc(100vw - 36px);
+  font-family:var(--mono);font-size:11.5px;color:var(--ice);
+  background:rgba(11,18,34,.66);border:1px solid var(--edge);border-radius:12px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 14px 36px rgba(0,0,0,.45), inset 0 1px 0 var(--edge-hi);
+  overflow:hidden;
+}
+#console .bar{display:flex;justify-content:space-between;padding:8px 13px;border-bottom:1px solid var(--edge);color:var(--ice);letter-spacing:.06em}
+#console .bar b{color:var(--signal);font-weight:500}
+#console .lines{padding:9px 13px;display:flex;flex-direction:column;gap:5px;min-height:112px;justify-content:flex-end}
+#console .lines div{opacity:0;transform:translateY(4px);animation:clog .4s forwards}
+#console .lines b{color:var(--signal);font-weight:500}
+#console .lines i{font-style:normal;color:var(--ok)}
+@keyframes clog{to{opacity:.92;transform:none}}
+@media(max-width:900px){#console{display:none}}
+.nav-led{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);flex:none}
+</style>
+</head>
+<body>
+
+<div id="boot" aria-hidden="true"><pre id="bootlines"></pre></div>
+<div class="scan" aria-hidden="true"></div>
+<div id="prog"></div>
+<div class="glow" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="field-hint">harness: live <b>k-NN</b> · cursor = query vector</div>
+<div id="console" aria-hidden="true" style="width: 17.5%; margin: 0 auto;">
+  <div class="bar">
+    <span>vessel<b>::</b>portfolio</span>
+    <span>loop <b>0</b>ms drift</span>
+  </div>
+  <div class="lines" id="clog"></div>
+</div>
+
+<nav>
+  <div class="pill">
+    <span class="nav-led" aria-hidden="true"></span><a class="mark" href="#top">pranay<b>@</b>nannuri:<b>~</b>$ <b>./harness</b></a>
+    <a class="lnk" href="#experience">experience</a>
+    <a class="lnk" href="#projects">projects</a>
+    <a class="lnk" href="#patent">patent</a>
+    <a class="lnk" href="#skills">skills</a>
+    <a class="res" href="resume.pdf" target="_blank" rel="noopener">resume ↗</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap">
+    <p class="eyebrow">agent: pranay.nannuri · role: data_engineer@netradyne · loc: BLR</p>
+    <h1>Data infrastructure at fleet scale, <span class="amp">shipped with AI agents</span> under human judgment.</h1>
+    <p class="lede">I build distributed, data-intensive backend systems — <b>3 production microservices</b> ingesting telemetry from 35,000 devices, and the <b>vector-search infrastructure</b> behind Netradyne's Video LiveSearch. After hours I build the agent harnesses and MCP infrastructure that make AI-driven engineering actually work. <b>IIT (BHU) '25 · U.S. patent co-inventor.</b></p>
+    <div class="cta-row">
+      <a class="btn primary" href="#projects">run: view_work()</a>
+      <a class="btn" href="https://github.com/npkriami18" target="_blank" rel="noopener" data-log='tool: github.open("npkriami18")'>tool: github ↗</a>
+      <a class="btn" href="https://linkedin.com/in/npranaykr" target="_blank" rel="noopener" data-log="tool: linkedin.open()">tool: linkedin ↗</a>
+    </div>
+  </div>
+  <div class="trace">
+    <div class="glass hud trace-card rev">
+      <canvas id="tele" width="1200" height="92"></canvas>
+      <div class="ticker"><div class="tick-track" id="tick"></div></div>
+    </div>
+  </div>
+  <div class="proof">
+    <div class="glass hud stat rev"><div class="n"><span class="count" data-to="35000">0</span></div><div class="l">devices · real-time ingest</div></div>
+    <div class="glass hud stat rev"><div class="n"><span class="count" data-to="123">0</span><em>×</em></div><div class="l">ANN speedup @ 1M vectors</div></div>
+    <div class="glass hud stat rev"><div class="n"><span class="count" data-to="19">0</span>k<em>★</em></div><div class="l">repo · merged PR #364</div></div>
+    <div class="glass hud stat rev"><div class="n">US<em>·</em>Patent</div><div class="l">co-inventor · pending</div></div>
+  </div>
+</header>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head rev" data-mod><span class="mod"><span class="led"></span>MOD 01 · experience.load · <span class="st"></span></span><h2>Where I've shipped</h2><span class="rule"></span></div>
+
+    <div class="glass hud job rev">
+      <div class="when"><span class="co">Netradyne</span>Jul 2025 — Present<br>Driveri fleet-safety platform</div>
+      <div>
+        <h3>Data Engineer</h3>
+        <ul>
+          <li>Designed and shipped the <b>Jump Detection API</b> — real-time telemetry anomaly detection ingesting streams from <b>35,000 devices at 10-second intervals</b> with sub-200&nbsp;ms latency, owned end-to-end from design and NFRs through build, tests, Docker, and production monitoring.</li>
+          <li>Benchmarked <b>FAISS-HNSW vs exact k-NN in OpenSearch across 10K–1M vectors</b> (P50/95/99, 100 iterations): measured up to <b>123× speedup</b>, then used the data to right-size production — migrating the 400K+ doc Video LiveSearch index to exact search, <b>cutting infrastructure cost at ~0.4&nbsp;s average latency</b>.</li>
+          <li>Shipped the <b>waste-management vertical prototype</b> (Java/Quarkus + Angular micro-frontend) <b>by directing AI coding agents</b> through a self-designed Claude Code delivery pipeline — research → spec → issue decomposition → execution → pre-merge review.</li>
+          <li>Owned the internal <b>video search, review &amp; labelling platform</b> behind <b>Video LiveSearch</b>, Netradyne's industry-first natural-language fleet video search (launched Jan 2026).</li>
+          <li>Built and operated <b>4+ production Airflow (MWAA) data pipelines</b>; shipped two further microservices end-to-end; partitioned high-write PostgreSQL tables; <b>red-teamed the internal LLM chat-assistant</b> for prompt-injection and SQL-extraction vulnerabilities.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="glass hud job rev">
+      <div class="when"><span class="co">Jindal Steel &amp; Power</span>May — Jun 2024</div>
+      <div>
+        <h3>Summer Intern</h3>
+        <ul>
+          <li>Built a cloud-connected <b>IoT energy-monitoring system</b> on ESP32 — real-time acquisition, secure ThingSpeak transmission, Node.js/Express backend — for Industry&nbsp;4.0 remote industrial monitoring.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head rev" data-mod><span class="mod"><span class="led"></span>MOD 02 · projects.scan · <span class="st"></span></span><h2>Things I build after hours</h2><span class="rule"></span></div>
+    <div class="grid">
+      <a class="glass hud card tilt rev" data-log='tool: github.open("vessel")' href="https://github.com/npkriami18/vessel" target="_blank" rel="noopener">
+        <span class="meta">Agent Infrastructure · Python</span>
+        <h3>vessel</h3>
+        <p>A 20-module AI agent harness built from first principles — agent loop, tool-use protocol, memory, error recovery, subagent orchestration, git-worktree isolation, and an MCP plugin system.</p>
+        <span class="link">github.com/npkriami18/vessel</span>
+      </a>
+      <a class="glass hud card tilt rev" data-log='tool: github.open("mcp-net")' href="https://github.com/npkriami18/mcp-net" target="_blank" rel="noopener">
+        <span class="meta">Protocol Design · FastAPI · MCP</span>
+        <h3>MCP Net</h3>
+        <p>DNS-inspired hierarchical discovery for MCP ecosystems: clients know a single root node and resolve downstream services dynamically over a Root → Domain → Service resolver graph.</p>
+        <span class="link">github.com/npkriami18/mcp-net</span>
+      </a>
+      <a class="glass hud card tilt rev" data-log="tool: github.pr(364)" href="https://github.com/tirth8205/code-review-graph/pull/364" target="_blank" rel="noopener">
+        <span class="meta">Contribution · 19k-star repo</span>
+        <h3>code-review-graph</h3>
+        <p>Traced silently-reverted commits in a major MCP code-intelligence tool and restored dropped multi-language parser fixes with refreshed tests — merged upstream as PR #364.</p>
+        <span class="link">view merged PR #364</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="patent">
+  <div class="wrap">
+    <div class="sec-head rev" data-mod><span class="mod"><span class="led"></span>MOD 03 · patent.verify · <span class="st"></span></span><h2>On the record</h2><span class="rule"></span></div>
+    <div class="glass hud record rev">
+      <p class="rt">Natural Language-Driven Custom Alert Creation for Video &amp; Sensor Analytics on IoT Devices</p>
+      <div class="rec-grid">
+        <div class="f"><span>Application No.</span><b>US 19/567,981</b></div>
+        <div class="f"><span>Filed</span><b>Mar 16, 2026</b></div>
+        <div class="f"><span>Assignee</span><b>Netradyne, Inc.</b></div>
+        <div class="f"><span>Status</span><b class="pend">Patent pending</b></div>
+      </div>
+      <p class="note">One of eight named co-inventors. Originated from our 2nd-place finish at Netradyne Hackathon 2025 — filed as a company patent application within eight months.</p>
+    </div>
+    <div class="honors rev">
+      <span class="honor"><b>2nd place</b> · Netradyne Hackathon 2025 · of 25 teams</span>
+      <span class="honor"><b>FFE–Cognizant Scholar</b> · merit scholarship</span>
+      <span class="honor"><b>IIT (BHU) Varanasi</b> · B.Tech EE · CPI 9.19</span>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head rev" data-mod><span class="mod"><span class="led"></span>MOD 04 · stack.enumerate · <span class="st"></span></span><h2>What I work with</h2><span class="rule"></span></div>
+    <div class="glass hud skills-panel rev">
+      <div class="skill-row"><div class="k">Languages</div><div class="v"><b>C++ · SQL · Python</b></div></div>
+      <div class="skill-row"><div class="k">Backend</div><div class="v">FastAPI, REST API design, <b>microservices</b>, <b>distributed systems</b></div></div>
+      <div class="skill-row"><div class="k">Data</div><div class="v"><b>Apache Airflow</b> (MWAA), ETL &amp; workflow orchestration, <b>PostgreSQL</b> (schema design, partitioning, query optimization, pgvector), <b>OpenSearch</b> (k-NN, FAISS-HNSW)</div></div>
+      <div class="skill-row"><div class="k">Cloud &amp; Infra</div><div class="v">AWS (EC2, S3, ASG, ALB, SQS, MWAA), Docker, Consul, observability &amp; alerting (Prometheus, Sentry)</div></div>
+      <div class="skill-row"><div class="k">AI &amp; Agents</div><div class="v"><b>Agentic AI engineering</b> — LLM evaluation &amp; red-teaming, Claude Code (custom skills, prompt &amp; context engineering), <b>MCP</b>, multi-agent systems, AI-assisted code review, Google ADK</div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="glass hud foot-card rev">
+      <p class="eyebrow">MOD 05 · contact.open</p>
+      <p class="big">Building something with data or agents?<br><a href="mailto:pranaynannuri@gmail.com">pranaynannuri@gmail.com</a></p>
+      <div class="foot-links">
+        <a href="https://github.com/npkriami18" target="_blank" rel="noopener">github/npkriami18 ↗</a>
+        <a href="https://linkedin.com/in/npranaykr" target="_blank" rel="noopener">linkedin/npranaykr ↗</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">resume.pdf ↗</a>
+      </div>
+      <p class="colophon">© 2026 Pranay Nannuri · harness: vessel-inspired · background: live k-NN, the algorithm I benchmarked at work · loop: human_review(agent_output) · exit 0</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ living vector field : cursor = query vector, k-NN in real time ============ */
+(function(){
+  const c = document.getElementById('field');
+  const ctx = c.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  let W,H,dpr;
+  function size(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = innerWidth; H = innerHeight;
+    c.width = W*dpr; c.height = H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  size(); addEventListener('resize', size);
+
+  const N = Math.min(120, Math.floor(W*H/14000)+50);
+  const pts = [];
+  for(let i=0;i<N;i++){
+    pts.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
+      r:Math.random()*1.4+.8
+    });
+  }
+
+  /* the query vector: follows cursor; wanders on its own otherwise */
+  const q = {x:W*.62, y:H*.38, tx:W*.62, ty:H*.38, live:false};
+  let t0 = Math.random()*100;
+  addEventListener('pointermove', e=>{ q.tx=e.clientX; q.ty=e.clientY; q.live=true; }, {passive:true});
+  addEventListener('pointerleave', ()=>{ q.live=false; });
+
+  const K = 6;
+  let paused = false;
+  document.addEventListener('visibilitychange', ()=>{ paused = document.hidden; });
+
+  function frame(){
+    if(!paused){
+      ctx.clearRect(0,0,W,H);
+      /* drift */
+      if(!reduce){
+        for(const p of pts){
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<-20)p.x=W+20; if(p.x>W+20)p.x=-20;
+          if(p.y<-20)p.y=H+20; if(p.y>H+20)p.y=-20;
+        }
+      }
+      /* autonomous query wander when no pointer (and on touch devices) */
+      if(!q.live || coarse){
+        t0 += .004;
+        q.tx = W*.5 + Math.sin(t0*1.3)*W*.3 + Math.sin(t0*.7)*W*.08;
+        q.ty = H*.42 + Math.cos(t0)*H*.24;
+      }
+      q.x += (q.tx-q.x)*.06; q.y += (q.ty-q.y)*.06;
+
+      /* faint constellation links */
+      ctx.lineWidth = 1;
+      for(let i=0;i<N;i++){
+        for(let j=i+1;j<N;j++){
+          const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d2=dx*dx+dy*dy;
+          if(d2<7000){
+            ctx.strokeStyle = 'rgba(91,140,200,'+(0.10*(1-d2/7000)).toFixed(3)+')';
+            ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke();
+          }
+        }
+      }
+
+      /* k-NN from the query */
+      const ranked = pts.map(p=>{
+        const dx=p.x-q.x, dy=p.y-q.y;
+        return {p, d:Math.sqrt(dx*dx+dy*dy)};
+      }).sort((a,b)=>a.d-b.d).slice(0,K);
+
+      /* neighbor edges + distance labels */
+      ctx.font = '10px IBM Plex Mono, monospace';
+      for(const {p,d} of ranked){
+        const a = Math.max(0, 1-d/460);
+        if(a<=0) continue;
+        ctx.strokeStyle = 'rgba(255,178,36,'+(a*.75).toFixed(3)+')';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(q.x,q.y); ctx.lineTo(p.x,p.y); ctx.stroke();
+        ctx.fillStyle = 'rgba(255,178,36,'+(a*.8).toFixed(3)+')';
+        ctx.fillText(d.toFixed(0), (q.x+p.x)/2+6, (q.y+p.y)/2-4);
+      }
+
+      /* points */
+      for(const p of pts){
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7);
+        ctx.fillStyle = 'rgba(157,180,214,.55)'; ctx.fill();
+      }
+      for(const {p,d} of ranked){
+        const a = Math.max(.2, 1-d/460);
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r+1.4,0,7);
+        ctx.fillStyle = 'rgba(255,178,36,'+a.toFixed(3)+')';
+        ctx.shadowColor='rgba(255,178,36,.8)'; ctx.shadowBlur=8; ctx.fill(); ctx.shadowBlur=0;
+      }
+
+      /* query ring */
+      ctx.beginPath(); ctx.arc(q.x,q.y,7,0,7);
+      ctx.strokeStyle='#FFB224'; ctx.lineWidth=1.6;
+      ctx.shadowColor='rgba(255,178,36,.9)'; ctx.shadowBlur=12; ctx.stroke(); ctx.shadowBlur=0;
+      ctx.beginPath(); ctx.arc(q.x,q.y,1.8,0,7); ctx.fillStyle='#FFB224'; ctx.fill();
+      ctx.fillStyle='rgba(255,178,36,.9)';
+      ctx.fillText('q · agent.query', q.x+11, q.y-9);
+    }
+    if(reduce){ /* one static frame is enough */ return; }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ============ telemetry trace ============ */
+(function(){
+  const c = document.getElementById('tele');
+  const ctx = c.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W,H,dpr;
+  function size(){
+    dpr = Math.min(window.devicePixelRatio||1,2);
+    W = c.clientWidth; H = c.clientHeight;
+    c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  size(); addEventListener('resize', size);
+  const pts=[]; const N=150; let t=0;
+  function next(){
+    t++;
+    let v = Math.sin(t*.11)*6 + Math.sin(t*.043)*4;
+    if(Math.random()<.035) v += (Math.random()*26+10)*(Math.random()<.7?-1:1);
+    return v;
+  }
+  for(let i=0;i<N;i++) pts.push(next());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const mid=H*.55, step=W/(N-1);
+    ctx.beginPath();
+    for(let i=0;i<N;i++){ const x=i*step,y=mid-pts[i]; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.strokeStyle='#FFB224'; ctx.lineWidth=1.8;
+    ctx.shadowColor='rgba(255,178,36,.5)'; ctx.shadowBlur=8; ctx.stroke(); ctx.shadowBlur=0;
+    const hx=(N-1)*step, hy=mid-pts[N-1];
+    ctx.beginPath(); ctx.arc(hx-1,hy,3,0,7); ctx.fillStyle='#FFB224'; ctx.fill();
+  }
+  draw();
+  if(!reduce) setInterval(()=>{ pts.push(next()); pts.shift(); draw(); }, 60);
+})();
+
+/* ============ ticker ============ */
+(function(){
+  const items = [
+    '<span><b>ingest</b> 35,000 devices @ 10s intervals</span>',
+    '<span><b>bench</b> exact 7,071ms → hnsw 57ms · 123×</span>',
+    '<span><b>prod</b> 400K docs · ~0.4s avg latency</span>',
+    '<span><b>agents</b> research → spec → execute → review</span>',
+    '<span><b>patent</b> US 19/567,981 · pending</span>',
+    '<span><b>oss</b> PR #364 merged · 19k-star repo</span>',
+    '<span><b>loop</b> observe → plan → act → verify</span>',
+    '<span><b>status</b> <i>shipping</i></span>'
+  ];
+  const track = items.join('') + items.join(''); /* duplicate for seamless loop */
+  document.getElementById('tick').innerHTML = track;
+})();
+
+/* ============ stat count-up ============ */
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el = e.target, to = +el.dataset.to, dur = 1300, start = performance.now();
+      io.unobserve(el);
+      if(reduce){ el.textContent = to.toLocaleString(); return; }
+      (function step(now){
+        const p = Math.min(1,(now-start)/dur), ease = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(to*ease).toLocaleString();
+        if(p<1) requestAnimationFrame(step);
+      })(start);
+    });
+  },{threshold:.6});
+  document.querySelectorAll('.count').forEach(el=>io.observe(el));
+})();
+
+/* ============ 3D tilt on project cards ============ */
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  if(reduce||coarse) return;
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('pointermove', e=>{
+      const r = card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+      card.style.transform = 'rotateX('+(-py*7)+'deg) rotateY('+(px*9)+'deg) translateY(-3px)';
+    });
+    card.addEventListener('pointerleave', ()=>{ card.style.transform=''; });
+  });
+})();
+
+/* ============ scroll progress + reveal ============ */
+(function(){
+  const bar = document.getElementById('prog');
+  addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  }, {passive:true});
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.1});
+  document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+})();
+
+/* ============ boot handshake ============ */
+(function(){
+  const boot = document.getElementById('boot');
+  const out = document.getElementById('bootlines');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || sessionStorage.getItem('booted')){ boot.remove(); return; }
+  const lines = [
+    '<b>vessel</b> harness v2.0 \u2014 init',
+    'modules ..................... <i>20/20</i>',
+    'mcp: connected · tools: <i>ready</i>',
+    'spawn agent \u2192 <b>portfolio.render</b>',
+    'task: introduce_pranay() ... <i>running</i>'
+  ];
+  let i = 0;
+  (function step(){
+    if(i < lines.length){ out.innerHTML += lines[i++] + '\n'; setTimeout(step, 190); }
+    else setTimeout(()=>{ boot.classList.add('done'); sessionStorage.setItem('booted','1'); setTimeout(()=>boot.remove(), 600); }, 320);
+  })();
+})();
+
+/* ============ agent console ============ */
+(function(){
+  const wrap = document.getElementById('clog');
+  if(!wrap) return;
+  function log(msg){
+    const d = document.createElement('div');
+    d.innerHTML = msg;
+    wrap.appendChild(d);
+    while(wrap.children.length > 6) wrap.removeChild(wrap.firstChild);
+  }
+  window.__hlog = log;
+  log('<i>\u2713</i> harness online · agent: <b>portfolio.render</b>');
+  /* tool-call hooks */
+  document.querySelectorAll('[data-log]').forEach(el=>{
+    let last = 0;
+    el.addEventListener('pointerenter', ()=>{
+      const now = Date.now();
+      if(now - last > 4000){ last = now; log(el.dataset.log); }
+    });
+  });
+  /* idle heartbeat */
+  const beats = ['loop: observe \u2192 plan \u2192 act \u2192 verify',
+                 'mem: 20 modules resident · <i>ok</i>',
+                 'worktree: isolated · drift: <i>0</i>',
+                 'review gate: <b>human</b> · policy: strict'];
+  let b = 0;
+  setInterval(()=>{ if(!document.hidden) window.__hlog(beats[b++ % beats.length]); }, 9000);
+})();
+
+/* ============ module status: running → ok ============ */
+(function(){
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const chip = e.target.querySelector('.mod');
+      setTimeout(()=>{
+        chip.classList.add('ok');
+        if(window.__hlog) window.__hlog('<i>\u2713</i> ' + chip.textContent.trim().split('·')[1].trim() + ' \u2014 complete');
+      }, 650);
+      io.unobserve(e.target);
+    });
+  },{threshold:.3});
+  document.querySelectorAll('[data-mod]').forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
