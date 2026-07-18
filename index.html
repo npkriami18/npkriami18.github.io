@@ -446,7 +446,7 @@ footer .big a:hover{color:var(--signal)}
   }
   size(); addEventListener('resize', size);
 
-  const N = Math.min(400, Math.floor(W*H/4000)+100);
+  const N = Math.min(240, Math.floor(W*H/7000)+80);
   const pts = [];
   for(let i=0;i<N;i++){
     pts.push({
@@ -462,7 +462,7 @@ footer .big a:hover{color:var(--signal)}
   addEventListener('pointermove', e=>{ q.tx=e.clientX; q.ty=e.clientY; q.live=true; }, {passive:true});
   addEventListener('pointerleave', ()=>{ q.live=false; });
 
-  const K = 6;
+  const K = 15;
   let paused = false;
   document.addEventListener('visibilitychange', ()=>{ paused = document.hidden; });
 
