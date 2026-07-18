@@ -446,7 +446,7 @@ footer .big a:hover{color:var(--signal)}
   }
   size(); addEventListener('resize', size);
 
-  const N = Math.min(120, Math.floor(W*H/14000)+50);
+  const N = Math.min(400, Math.floor(W*H/4000)+100);
   const pts = [];
   for(let i=0;i<N;i++){
     pts.push({
@@ -490,7 +490,7 @@ footer .big a:hover{color:var(--signal)}
       for(let i=0;i<N;i++){
         for(let j=i+1;j<N;j++){
           const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d2=dx*dx+dy*dy;
-          if(d2<7000){
+          if(d2<12000){
             ctx.strokeStyle = 'rgba(91,140,200,'+(0.10*(1-d2/7000)).toFixed(3)+')';
             ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke();
           }
